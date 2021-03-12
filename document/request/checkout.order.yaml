@@ -1,0 +1,12 @@
+#swagger: "2.0"
+description: 
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id

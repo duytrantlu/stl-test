@@ -1,0 +1,20 @@
+#swagger: "2.0"
+description: order's body
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        productName:
+          type: string
+        price:
+          type: integer
+          format: double
+        quantity:
+          type: integer
+          format: int32
+      required:
+        - productName
+        - price
+        - quantity

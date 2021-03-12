@@ -1,0 +1,24 @@
+description: 'Content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions. (missing params, param invalid)'
+content:
+  application/json:
+    schema:
+      description: 'UnprocessableEntity'
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+        errors:
+          type: object
+      example:
+        code: UNPROCESSABLE_ENTITY
+        name: UnprocessableEntity
+        message: 'Id invalid'
+        errors:
+          location: params
+          param: id
+          msg: 'id invalid'
+          value: 123

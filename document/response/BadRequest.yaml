@@ -1,0 +1,17 @@
+description: 'Bad request'
+content:
+  application/json:
+    schema:
+      description: BadRequest
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+      example:
+        code: BAD_REQUEST
+        name: BadRequest
+        message: 'Cannot create new order'

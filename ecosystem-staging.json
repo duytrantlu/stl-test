@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "stl4-01-order-service-staging",
+      "script": "./dist/index.js",
+      "merge_logs": true,
+      "env": {
+        "NODE_ENV": "staging"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+export {RoutingLib as router, route} from './routing.lib';

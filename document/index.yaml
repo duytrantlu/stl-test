@@ -1,0 +1,352 @@
+openapi: 3.0.3
+info:
+  title: Setel4 Order Service
+  version: 1.0.0
+  description: "Setel4 order service"
+  termsOfService: 'https://www.setel.my/terms/'
+  contact:
+    name: DuyTM
+    url: 'https://github.com/duytrantlu'
+    email: duy.tran@vmodev.com
+  license:
+    name: ISC
+    url: 'https://opensource.org/licenses/ISC'
+externalDocs:
+  description: Setel4
+  url: 'https://www.setel.my/'
+tags:
+  - name: Order
+    description: Everything about your Order
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+servers:
+  - url: https://api.setel4.vmo.dev/stl4-01-order-service/api/v1
+    description: 'staging server'
+paths:
+  /orders:
+    post:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: Create
+      description: Create new order
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrder'
+      responses:
+        200:
+          description: A new order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: List
+      description: List order
+      parameters:
+        - name: status
+          in: query
+          description: 'filters the order status with comma separated values'
+          schema:
+            type: string
+          example: 'delivered,cancelled'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/select'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/populations'
+        - $ref: '#/components/parameters/where'
+        - $ref: '#/components/parameters/pattern'
+        - $ref: '#/components/parameters/startTime'
+        - $ref: '#/components/parameters/endTime'
+      responses:
+        200:
+          description: list order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  totalItem:
+                    type: integer
+                    format: int32
+                  page:
+                    type: integer
+                    format: int32
+                  pageSize:
+                    type: integer
+                    format: int32
+                  totalPage:
+                    type: integer
+                    format: int32
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+  /orders/{id}:
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: Detail order By Id
+      description: Get detail order by Id
+      parameters:
+        - name: id
+          description: order id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A single order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+  /orders/{id}/cancel:
+    patch:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: Cancel Order
+      description: Cancel an Order
+      parameters:
+        - name: id
+          description: order id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A single order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+  /orders/{id}/check-status:
+    post:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: Check Order Status
+      description: Check order's status
+      parameters:
+        - name: id
+          description: order id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A single order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: response status order
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+  /orders/checkout:
+    post:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Order
+      summary: Checkout
+      description: Checkout Order
+      requestBody:
+        $ref: '#/components/requestBodies/CheckoutOrder'
+      responses:
+        200:
+          description: A single order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: response message checkout
+                example:
+                  message: 'Checkout completed.'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        409:
+          $ref: '#/components/responses/Conflict'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  parameters:
+    clientSecret:
+      name: x-setel-client-secret
+      description: 'Authorization access internal service'
+      in: header
+      required: false
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      description: 'page selected, default = 1'
+      schema:
+        type: number
+        minimum: 1
+    pageSize:
+      name: pageSize
+      in: query
+      description: 'page size (default 20, set page_size = -1 => get all)'
+      schema:
+        type: number
+        maximum: 100
+    select:
+      name: select
+      in: query
+      description: 'field select, example: email:1'
+      schema:
+        type: string
+    sort:
+      name: sort
+      in: query
+      description: 'sorting, example: date_created:-1'
+      schema:
+        type: string
+    populations:
+      name: populations
+      in: query
+      description: 'populate references info, example: wholesaler:name address'
+      schema:
+        type: string
+    where:
+      name: where
+      in: query
+      description: 'where condition match, example: "email:manh.nguyen@vmodev.com;role:wholesaler"'
+      schema:
+        type: string
+    pattern:
+      name: pattern
+      in: query
+      description: 'pattern condition pattern regex, example: "email:duytran;first_name:n;role:wholesa"'
+      schema:
+        type: string
+    startTime:
+      name: startTime
+      in: query
+      description: 'time start filter is timestamp seconds, example: 1574391051'
+      schema:
+        type: number
+    endTime:
+      name: endTime
+      in: query
+      description: 'time end filter is timestamp seconds, example: 1574301051'
+      schema:
+        type: number
+  requestBodies:
+    CreateOrder:
+      $ref: 'request/create.order.yaml'
+    CheckoutOrder:
+      $ref: 'request/checkout.order.yaml'
+  responses:
+    BadRequest: # 400
+      $ref: 'response/BadRequest.yaml'
+    Unauthorized: # 401
+      $ref: 'response/Unauthorized.yaml'
+    Forbidden: # 403
+      $ref: 'response/Forbidden.yaml'
+    NotFound: # 404
+      $ref: 'response/NotFound.yaml'
+    Conflict: # 409
+      $ref: 'response/Conflict.yaml'
+    UnprocessableEntity: # 422
+      $ref: 'response/UnprocessableEntity.yaml'
+  schemas:
+    Order:
+      $ref: 'schema/Order.yaml'
+  securitySchemes:
+    Bearer: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+      description: |
+        For accessing the API a valid JWT token must be passed in all the queries in
+        the 'Authorization' header.
+
+
+        A valid JWT token is generated by the API and retourned as answer of a call
+        to the route /login giving a valid user & password.
+
+
+        The following syntax must be used in the 'Authorization' header :
+
+            Bearer xxxxxx.yyyyyyy.zzzzzz
+security:
+  - Bearer: [ ]  # <-- use the same name here

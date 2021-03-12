@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "string",
+            "description": "customer id (user id)"
+          },
+          "productName": {
+            "type": "string",
+            "description": "name product"
+          },
+          "price": {
+            "type": "number",
+            "description": "product price"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "product quantity"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "total amount = price + quantity"
+          },
+          "paymentId": {
+            "type": "string",
+            "description": "payment processing response after checkout order"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "common state deleted data"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "confirmed",
+              "delivered",
+              "cancelled"
+            ],
+            "default": "created"
+          },
+          "createdDate": {
+            "type": "string"
+          },
+          "updatedDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer",
+          "productName",
+          "price",
+          "quantity",
+          "currency",
+          "totalAmount",
+          "status"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "totalItem": {
+      "type": "number"
+    },
+    "page": {
+      "type": "number"
+    },
+    "pageSize": {
+      "type": "number"
+    },
+    "totalPage": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,57 @@
+image: rzdevteam/ci-node:v12
+pipelines:
+  branches:
+    develop:
+      - step:
+          name: develop
+          caches:
+            - node
+          script:
+            - APPLICATION=stl4-01-order-service
+            - ENV=$BITBUCKET_BRANCH
+            - VERSION=$ENV-$(git rev-parse --short HEAD)
+
+            # running testing
+            - yarn install
+            - yarn test:cov
+          services:
+            - mongo
+    # auto build for branch
+    staging:
+      - step:
+          name: staging
+          caches:
+            - node
+            - docker
+          script:
+            - APPLICATION=stl4-01-order-service
+            - ENV=$BITBUCKET_BRANCH
+            - VERSION=$ENV-$(git rev-parse --short HEAD)
+
+            # build package
+            - yarn install
+            - yarn build:$ENV
+
+            # build docker application
+            - docker build -t $DOCKER_REGISTRY_HOST/$APPLICATION:$ENV -f .docker/$ENV.dockerfile .
+            - docker tag $DOCKER_REGISTRY_HOST/$APPLICATION:$ENV $DOCKER_REGISTRY_HOST/$APPLICATION:$VERSION
+
+            # auth aws
+            - export _DOCKER_REPO="$(aws ecr get-authorization-token --output text  --query 'authorizationData[].proxyEndpoint')"
+            - aws ecr get-login --no-include-email --region ap-southeast-2 | awk '{print $6}' | docker login -u AWS --password-stdin $_DOCKER_REPO
+
+            # sync container to Docker Hub
+            - docker push $DOCKER_REGISTRY_HOST/$APPLICATION:$ENV
+            - docker push $DOCKER_REGISTRY_HOST/$APPLICATION:$VERSION
+
+            # preload kubeconfig & re-deployment
+            - mkdir -p ~/.kube
+            - (umask  077 ; echo $KUBE_CONFIG | base64 -d > ~/.kube/config)
+            - kubectl config use-context setel3-$ENV
+            - helm upgrade --install -f helm/$APPLICATION/values/$ENV.values.yaml --set image.tag=$VERSION $APPLICATION helm/$APPLICATION
+          services:
+            - docker
+definitions:
+  services:
+    mongo:
+      image: mongo:3.6.1

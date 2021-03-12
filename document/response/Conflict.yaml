@@ -1,0 +1,19 @@
+description: 'Conflict params (confuse param)'
+content:
+  application/json:
+    schema:
+      description: Conflict
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+        errors:
+          type: object
+      example:
+        code: CONFLICT
+        name: Conflict
+        message: 'Conflict'

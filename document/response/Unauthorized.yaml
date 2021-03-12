@@ -1,0 +1,17 @@
+description: 'Unauthorized'
+content:
+  application/json:
+    schema:
+      description: Unauthorized
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+      example:
+        code: credentials_required
+        name: UnauthorizedError
+        message: No authorization token was found

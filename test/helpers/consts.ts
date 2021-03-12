@@ -1,0 +1,19 @@
+export default {
+  TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Njc1ODk0OTM3MiIsIl9pZCI6IjVmNzZmOGUwMmE1ZjFmM2Y0ZjE5MWZjNyIsImVtYWlsIjoiZHV5LnRyYW5Adm1vZGV2LmNvbSIsImlhdCI6MTYzNDYxNDUwMn0.bNTtNyY8kgaqR4_39tz3pVQ9BFOHw6Q9Oc7yXFzcsic',
+  REQUEST_TIMEOUT: 50000,
+  EXT_NAME_PRODUCT_CONFIRMED: 'name_for_confirmed_checkout',
+  EXT_NAME_PRODUCT_DECLINED: 'name_for_declined_checkout'
+};
+
+export const TestConst = {
+  STATUS: {
+    SUCCESS: 200,
+    BAD: 400,
+    NOT_FOUND: 404,
+    CONFLICT: 409,
+    FORBIDDEN: 403,
+    GONE: 410,
+    UNAUTHORIZED: 401,
+    UNPROCESSABLE_ENTITY: 422
+  }
+};
